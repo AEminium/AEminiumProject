@@ -1,22 +1,25 @@
-package aeminiumruntime;
+package aeminiumruntime.examples;
 
-import aeminiumruntime.linear.LinearRuntime;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Main {
+import aeminiumruntime.Runtime;
+import aeminiumruntime.Task;
+import aeminiumruntime.Body;
+import aeminiumruntime.simpleparallel.ParallelRuntime;
 
-    /**
-     * @param args the command line arguments
-     */
+public class Main {
+    
+    private static int MAX_CALC = 30;
+     
     public static void main(String[] args) {
-        Runtime rt = new LinearRuntime();
+        final Runtime rt = new ParallelRuntime();
         rt.init();
 
         Body b1 = new Body() {
             public void execute() {
                 int sum = 0;
-                for (int i = 0; i < 100; i++) {
+                for (int i = 0; i < MAX_CALC; i++) {
                     sum +=i;
                 }
                 System.out.println("Sum: " + sum);
@@ -26,8 +29,15 @@ public class Main {
         Body b2 = new Body() {
             public void execute() {
                 int max = 0;
-                for (int i = 0; i < 100; i++) {
+                for (int i = 0; i < MAX_CALC; i++) {
                     if (i > max) max = i;
+                    System.out.println("Calculating Maximum...");
+                    try {
+                        Thread.sleep(100);                        
+                    } catch (InterruptedException e) {
+                        // wait
+                    }
+
                 }
                 System.out.println("Maximum: " + max);
             }
@@ -35,7 +45,7 @@ public class Main {
 
         Body b3 = new Body() {
             public void execute() {
-                for (int i = 0; i < 20; i++) {
+                for (int i = 0; i < MAX_CALC/10; i++) {
                     System.out.println("Processing...");
                 }
             }
@@ -50,8 +60,8 @@ public class Main {
         Collection<Task> deps = new ArrayList<Task>();
         deps.add(t2);
         rt.schedule(t3, deps);
-
         rt.shutdown();
+        
     }
 
 }

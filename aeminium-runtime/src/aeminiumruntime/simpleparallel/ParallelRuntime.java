@@ -1,4 +1,10 @@
-package aeminiumruntime.linear;
+package aeminiumruntime.simpleparallel;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import aeminiumruntime.AtomicTask;
 import aeminiumruntime.BlockingTask;
@@ -8,25 +14,19 @@ import aeminiumruntime.NonBlockingTask;
 import aeminiumruntime.Runtime;
 import aeminiumruntime.RuntimeTask;
 import aeminiumruntime.Task;
-import aeminiumruntime.linear.scheduler.LinearScheduler;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.Callable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import aeminiumruntime.simpleparallel.scheduler.ParallelScheduler;
 
+public class ParallelRuntime extends Runtime {
 
-public class LinearRuntime extends Runtime {
-
-    private LinearTaskGraph graph;
-    private LinearScheduler scheduler;
+    private ParallelTaskGraph graph;
+    private ParallelScheduler scheduler;
     private int idCounter;
     private boolean hasStarted = false;
 
     @Override
     public void init() {
-        graph = new LinearTaskGraph();
-        scheduler = new LinearScheduler(graph);
+        graph = new ParallelTaskGraph();
+        scheduler = new ParallelScheduler(graph);
         scheduler.start();
         idCounter = 0;
     }
@@ -52,7 +52,7 @@ public class LinearRuntime extends Runtime {
             scheduler.turnOff();
             scheduler.join();
         } catch (InterruptedException ex) {
-            Logger.getLogger(LinearRuntime.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ParallelRuntime.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -64,9 +64,9 @@ public class LinearRuntime extends Runtime {
     @Override
     public BlockingTask createBlockingTask(Callable<Body> b) {
         try {
-            return new LinearBlockingTask(b.call(), idCounter++);
+            return new ParallelBlockingTask(b.call(), idCounter++);
         } catch (Exception ex) {
-            Logger.getLogger(LinearRuntime.class.getName()).log(Level.SEVERE, "Error creating Task.", ex);
+            Logger.getLogger(ParallelRuntime.class.getName()).log(Level.SEVERE, "Error creating Task.", ex);
             return null;
         }
     }
@@ -74,9 +74,9 @@ public class LinearRuntime extends Runtime {
     @Override
     public NonBlockingTask createNonBlockingTask(Body b) {
         try {
-            return new LinearNonBlockingTask(b, idCounter++);
+            return new ParallelNonBlockingTask(b, idCounter++);
         } catch (Exception ex) {
-            Logger.getLogger(LinearRuntime.class.getName()).log(Level.SEVERE, "Error creating Task.", ex);
+            Logger.getLogger(ParallelRuntime.class.getName()).log(Level.SEVERE, "Error creating Task.", ex);
             return null;
         }
     }

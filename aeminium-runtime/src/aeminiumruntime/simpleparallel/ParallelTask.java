@@ -1,18 +1,18 @@
-package aeminiumruntime.linear;
+package aeminiumruntime.simpleparallel;
 
 import aeminiumruntime.Body;
 import aeminiumruntime.Hint;
 import aeminiumruntime.RuntimeTask;
 import java.util.Collection;
 
-public class LinearTask implements RuntimeTask {
+public class ParallelTask implements RuntimeTask {
 
     private int id;
     private Body body;
     private boolean done;
     private boolean started;
 
-    public LinearTask(Body b, int id) {
+    public ParallelTask(Body b, int id) {
         this.body = b;
         this.id = id;
         this.started = false;
