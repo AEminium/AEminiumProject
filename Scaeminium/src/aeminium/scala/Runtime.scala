@@ -9,7 +9,6 @@ object Runtime {
 	val r:JRuntime = Factory.getRuntime
 	
 	def ! (task:Task) {
-		println("Starting" + task.ref .toString())
 		r.schedule (task.ref, task.parent, java.util.Arrays.asList (task.deps.toArray: _*))
 	}
 	

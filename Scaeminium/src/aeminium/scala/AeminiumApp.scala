@@ -30,27 +30,27 @@ trait AeminiumApp {
 		
 	}
 	
-	def || (lambda: JTask => Unit):Task = {
+	def || (lambda: JTask => Any):Task = {
 		new NonBlockingTask(lambda)
 	}
 	
-	def || (parent:Task):((JTask => Unit) => Task) = {
+	def || (parent:Task):((JTask => Any) => Task) = {
 		lambda => new NonBlockingTask(lambda, parent.ref)
 	}
 	
-	def ++ (lambda: JTask => Unit):Task = {
+	def ++ (lambda: JTask => Any):Task = {
 		new BlockingTask(lambda)
 	}
 	
-	def ++ (parent:Task):((JTask => Unit) => Task) = {
+	def ++ (parent:Task):((JTask => Any) => Task) = {
 		lambda => new BlockingTask(lambda, parent.ref)
 	}
 	
-	def <> (datagroup:DataGroup, lambda: JTask => Unit):Task = {
+	def <> (datagroup:DataGroup, lambda: JTask => Any):Task = {
 		new AtomicTask(datagroup, lambda)
 	}
 	
-	def <> (datagroup:DataGroup, parent:Task):((JTask => Unit) => Task) = {
+	def <> (datagroup:DataGroup, parent:Task):((JTask => Any) => Task) = {
 		lambda => new AtomicTask(datagroup, lambda, parent.ref)
 	}
 	

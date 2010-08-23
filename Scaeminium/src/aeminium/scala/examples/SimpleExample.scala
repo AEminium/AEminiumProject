@@ -25,11 +25,8 @@ object SimpleExample extends AeminiumApp {
 	 	  Tests.power(2, 20)
 	  }) !
 	  
-	  val t2 = ||(t1)( task => {
+	  (||(t1)( task => {
 	 	  Tests.matrixMultiplication
-	  })
-	  
-	  t2 << t1
-	  t2 !
+	  }) << t1) !
   }
 }
