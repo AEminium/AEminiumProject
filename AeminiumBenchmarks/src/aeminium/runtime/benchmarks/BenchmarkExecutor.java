@@ -17,7 +17,7 @@
  *  along with Plaid Programming Language.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package aeminium.runtime.tools.benchmark.forkjoin;
+package aeminium.runtime.benchmarks;
 
 public class BenchmarkExecutor {
 
